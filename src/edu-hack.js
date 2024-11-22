@@ -135,8 +135,7 @@ function showCorrectAnswers() {
             output += "</div>";
 
             question.element.before(output);
-        }
-        else if (question.getWidgetClass() == "ConnectAnswerETestWidget") {
+        } else if (question.getWidgetClass() == "ConnectAnswerETestWidget") {
             const correctAnswers = question.props.pairs;
 
             warnSecured(question);
@@ -244,103 +243,7 @@ function showCorrectAnswers() {
             output += "</div>";
 
             question.element.before(output);
-        }else if (question.getWidgetClass() == "SvgAnswerETestWidget") {
-        console.log(question)
-        function parseCorrectExpression(correctExpression) {
-            const expressions = correctExpression.split(/&&|\|\|/);
-            const correctAnswers = {};
-          
-            expressions.forEach((expression) => {
-              const parts = expression.split(/[()]/).filter(Boolean);
-              parts.forEach((part) => {
-                const match = part.match(/g_(\w+) == "(\w+)"/);
-                if (match) {
-                  const [, variable, value] = match;
-                  if (correctAnswers[variable]) {
-                    correctAnswers[variable].push(value);
-                  } else {
-                    correctAnswers[variable] = [value];
-                  }
-                }
-              });
-            });
-          
-            const output = Object.entries(correctAnswers).map(([variable, values]) => {
-              return `${variable} = ${values.filter((value, index, array) => array.indexOf(value) === index).join(" / ")}`;
-            });
-          
-            return output;
         }
-        
-        const answers = question.props.answers;
-        const correctExpression = question.props.correctExpression;
-      
-        // Parse the correct expression to determine the correct answers
-        const correctAnswers = parseCorrectExpression(correctExpression);
-
-        console.log(correctAnswers)
-
-        Object.keys(question.answersExtended).forEach((key, index) => {
-            const draggableSelector = `#wq${question.id}---${key}`;
-            const droppableSelector = `#wq${question.id}---${key}`;
-        
-            const draggableElem = document.querySelector(draggableSelector);
-          const droppableElem = document.querySelector(droppableSelector);
-          
-          console.log(key)
-        
-            if (draggableElem) {
-              const tspan = draggableElem.querySelector('tspan');
-              if (tspan) {
-                console.log(key)
-                tspan.textContent = String(key.replace("g_", ""));
-              } else {
-                console.log(key)
-                const tspan = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
-                tspan.textContent = String(key.replace("g_", ""));
-                tspan.style = "font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:35.2778px;font-family:Arial;-inkscape-font-specification:Arial;fill:#000000;stroke:#000000;stroke-width:0;stroke-opacity:0"
-                tspan.setAttribute("x", Number(draggableElem.querySelector("circle").getAttribute("cx")) - Number(draggableElem.querySelector("circle").getAttribute("r") / 8 * 3))
-                tspan.setAttribute("y", Number(draggableElem.querySelector("circle").getAttribute("cy")) + Number(draggableElem.querySelector("circle").getAttribute("r") / 2))
-                const text = document.createElementNS('http://www.w3.org/2000/svg', 'text')
-                text.style = "font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:35.2778px;line-height:1.25;font-family:Arial;-inkscape-font-specification:Arial;opacity:0.87;fill:#ff9955;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:round;stroke-opacity:0;paint-order:fill markers stroke;stop-color:#000000"
-                text.appendChild(tspan)
-                draggableElem.appendChild(text);
-              }
-            }
-        
-            if (droppableElem) {
-              const tspan = droppableElem.querySelector('tspan');
-              if (tspan) {
-                console.log(key)
-                tspan.textContent = String(key.replace("g_", ""));
-              } else {
-                console.log(key)
-                const tspan = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
-                tspan.textContent = String(key.replace("g_", ""));
-                tspan.style = "font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:35.2778px;font-family:Arial;-inkscape-font-specification:Arial;fill:#000000;stroke:#000000;stroke-width:0;stroke-opacity:0"
-                tspan.setAttribute("x", droppableElem.querySelector("circle").getAttribute("cx") - droppableElem.querySelector("circle").getAttribute("r") / 2)
-                tspan.setAttribute("y", droppableElem.querySelector("circle").getAttribute("cy") - droppableElem.querySelector("circle").getAttribute("r") / 2)
-                const text = document.createElementNS('http://www.w3.org/2000/svg', 'text')
-                text.style = "font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:35.2778px;line-height:1.25;font-family:Arial;-inkscape-font-specification:Arial;opacity:0.87;fill:#ff9955;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:round;stroke-opacity:0;paint-order:fill markers stroke;stop-color:#000000"
-                text.appendChild(tspan)
-                droppableElem.appendChild(text);
-              }
-            }
-          });
-      
-        // Display the correct answers
-        let output = "<div class='edu-hack' style='background-color: #2196F3; color: white; padding: 5px; margin: 0;'>Correct answers:<ol style='list-style-type: decimal; padding-left: 30px;'>";
-      
-        for (let i = 0; i < correctAnswers.length; i++) {
-          output += `<li> ${correctAnswers[i]} </li>`;
-        }
-      
-        output += "</div>";
-
-        console.log(answers, correctExpression, correctAnswers, output);
-      
-        question.element.before(output);
-      }
     });
 }
 
