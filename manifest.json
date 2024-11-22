@@ -3,18 +3,16 @@
     "version": "4.7",
     "description": "Get test answers easily",
     "web_accessible_resources": [
-        "src/edu-hack.js"
+        {"resources": ["src/edu-hack.js"],
+        "matches": ["*://*.edupage.org/*"]}
     ],
     "icons": {
         "48": "icons/48.jpg"
     },
-    "browser_action": {
-        "default_title": "Click me to show test answers!",
-        "default_icon": "icons/48.jpg"
-    },
-    "background": {
-        "scripts": ["src/initialize.js"],
-        "persistent": false
+    "action": {
+        "default_title": "Click S to show correct answers\nClick H to hide answers\nClick C to choose the correct answers automatically (only when correct answers are shown)",
+        "default_icon": "icons/48.jpg",
+        "default_popup": "src/popup/popup.html"
     },
     "content_scripts": [
         {
@@ -22,6 +20,7 @@
             "js": ["src/content-script.js"]
         }
     ],
-    "permissions": ["*://*/edupage.org/*", "activeTab"],
-    "manifest_version": 2
+    "permissions" : [],
+    "host_permissions": ["*://*/edupage.org/*"],
+    "manifest_version": 3
   }
